@@ -1,0 +1,136 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import CategoryView from "./CategoryView";
+
+const SP = (props) => (
+  <div className="col-12 col-md-6 col-lg-4">
+    <div className="card" style={{ height: "440px", marginBottom: "20px" }}>
+      <Link to={`/sanpham/${props.sp._id}`}>
+        <img
+          className="card-img-top"
+          src={props.sp.hinhanhSP}
+          alt="Card  cap"
+          width={200}
+          height={250}
+        />
+      </Link>
+      <div className="card-body">
+        <div>
+          <h6 className="card-title" style={{ fontSize: "13px" }}>
+            <Link to="" style={{ color: "green" }}>
+              {props.sp.tensp}
+            </Link>
+          </h6>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            width: "85%",
+            margin: "auto",
+            bottom: "0",
+          }}
+        >
+          <p className="btn btn-danger btn-block">{props.sp.giasp} VNĐ</p>
+          <p className="btn btn-success btn-block">Thêm giỏ hàng</p>
+        </div>
+        <div className="row">
+          <div className="col"></div>
+          <div className="col"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export default class ProductPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { items: [] };
+  }
+
+  componentDidMount() {
+    axios
+      .get(`http://localhost:5000/sanpham${window.location.search}`)
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ items: res.data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  ListSP() {
+    return this.state.items.map(function (object, i) {
+      return <SP sp={object} key={i} />;
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li className="breadcrumb-item">
+                  <Link to="/">Home</Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link to="/sanpham">Sản phẩm</Link>
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+        <div style={{display:"flex"}}>
+          {/* -- Category -- */}
+          <CategoryView />
+          {/* -- Category -- */}
+          <div className="col-sm-9" >
+            <div className="row">
+              {/* -- Danh sách sản phẩm -- */}
+              {this.ListSP()}
+              {/* -- Danh sách sản phẩm -- */}
+              <div className="col-12">
+                <nav aria-label="...">
+                  <ul className="pagination">
+                    <li className="page-item disabled">
+                      <a className="page-link" href="#" tabindex="-1">
+                        Trước
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        1
+                      </a>
+                    </li>
+                    <li className="page-item active">
+                      <a className="page-link" href="#">
+                        2 <span className="sr-only">(current)</span>
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        3
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        Sau
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
