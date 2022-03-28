@@ -1,55 +1,93 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import { useParams, Link } from "react-router-dom";
 
 function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState();
+
+  // const login = () => {
+  //   Axios.post("http://localhost:5000/user/dangnhap", {
+  //     email: email,
+  //     password: password,
+  //   })
+  //     .then((res) => {
+  //       localStorage.setItem("token", JSON.stringify(res.data));
+  //       console.log(res.data);
+  //       res.status(201).send();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+
+    await Axios.post("http://localhost:5000/user/dangnhap", {
+      email: email,
+      password: password,
+    })
+      .then((res) => {
+        setUser(res.data);
+        localStorage.setItem("customerInfo", JSON.stringify(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <div class="container">
-      <div class="container">
-        <div class="row">
-          <div class="col">
+    <div className="container">
+      <div className="container">
+        {/* <div className="row">
+          <div className="col">
             <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">Home</li>
-                <li class="breadcrumb-item">Đăng nhập</li>
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item">Home</li>
+                <li className="breadcrumb-item">Đăng nhập</li>
               </ol>
             </nav>
           </div>
-        </div>
+        </div> */}
 
-        <div class="col-md-12">
-          <div class="row">
-            <div class="container ">
+        <div className="col-md-12">
+          <div className="row">
+            <div className="container ">
               <h4 style={{ textAlign: "center" }}>
                 <b>Đăng nhập</b>
               </h4>
               <hr />
 
-              <div class="login-form " style={{ width: "40", padding: "25px" }}>
-                <div class="form-group">
+              <form
+                className="login-form "
+                style={{ width: "40", padding: "25px" }}
+                onSubmit={submitForm}
+              >
+                <div className="form-group">
                   <input
-                    type="text"
-                    class="form-control"
-                    id="inputuser"
-                    name="inputuser"
+                    type="email"
+                    className="form-control"
                     placeholder="Email"
-                    required="required"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <input
                     type="password"
-                    class="form-control"
-                    id="inputpass"
-                    name="inputpass"
+                    className="form-control"
                     placeholder="Mật khẩu"
-                    required="required"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
                 <hr />
-                <div class="clearfix form-group">
-                  <label class="float-left form-check-label">
+                <div className="clearfix form-group">
+                  <label className="float-left form-check-label">
                     <Link to="">Đăng ký tài khoản?</Link>
                   </label>
 
@@ -58,15 +96,17 @@ function LoginPage() {
                   </Link>
                 </div>
                 <hr />
-                <div class="form-group">
+                <div className="form-group">
                   <button
                     type="submit"
-                    class="btn btn-primary btn-block btn-success"
+                    className="btn btn-primary btn-block btn-success"
+                    // onClick={login}
                   >
                     Đăng nhập
                   </button>
                 </div>
-              </div>
+              </form>
+              <b>{}</b>
             </div>
           </div>
         </div>
@@ -74,4 +114,5 @@ function LoginPage() {
     </div>
   );
 }
+
 export default LoginPage;

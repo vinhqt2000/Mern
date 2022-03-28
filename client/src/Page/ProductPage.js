@@ -24,7 +24,7 @@ function ProductPage() {
   }, [url, pathName]);
 
   return (
-    <div>
+    <div style={{ minWidth: "100%" }}>
       <div className="container">
         <div className="row">
           <div className="col">
@@ -49,10 +49,13 @@ function ProductPage() {
         <div className="col-sm-9">
           <div className="row">
             {/* -- Danh sách sản phẩm -- */}
-            {/* {this.ListSP()} */}
 
             {products.map((item, index) => (
-              <div key={index} className="col-12 col-md-6 col-lg-4">
+              <div
+                key={index}
+                className="col-12 col-md-6 col-lg-4"
+                style={{ minWidth: "260px" }}
+              >
                 <div
                   className="card"
                   style={{ height: "440px", marginBottom: "20px" }}
@@ -79,7 +82,7 @@ function ProductPage() {
                         position: "absolute",
                         width: "85%",
                         margin: "auto",
-                        bottom: "0",
+                        bottom: "10px",
                       }}
                     >
                       <p className="btn btn-danger btn-block">

@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 function Header() {
-  // const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+
+  let userInfo = JSON.parse(localStorage.getItem("customerInfo"));
+
+  const signout = () => {
+    localStorage.clear();
+  };
 
   return (
     <div>
       <nav className="navbar navbar-expand-md navbar-dark bg-dark">
         <div className="container">
           <Link to="/" className="nav-link">
-            {" "}
             <img
               src="https://thuonglai.vn/image/catalog/logo/logo_big-1.png"
               alt=""
@@ -51,14 +57,42 @@ function Header() {
                 </Link>
               </li>
               <li className="nav-item">
-                <li className="nav-item">
-                  {/* <a className="nav-link" href="#">
-                    Đăng nhập
-                  </a> */}
+                {userInfo ? (
+                  <li className="nav-item dropdown">
+                    <b
+                      className="nav-link dropdown-toggle"
+                      id="dropdownMenuLink"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      Hello: {userInfo.hoten}
+                    </b>
+                    <ul
+                      className="dropdown-menu bg-dark"
+                      aria-labelledby="dropdownMenuLink"
+                      style={{ padding: "10px", marginBottom: "10px" }}
+                    >
+                      <li className="nav-item">
+                        <b style={{ color: "white" }}> Lịch sử đơn hàng </b>{" "}
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to="/"
+                          className="nav-item"
+                          style={{ color: "white" }}
+                          onClick={signout}
+                        >
+                          Đăng xuất
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                ) : (
                   <Link to="/dangnhap" className="nav-link">
                     Đăng nhập
                   </Link>
-                </li>
+                )}
               </li>
             </ul>
 

@@ -4,13 +4,33 @@ const bcrypt = require("bcryptjs");
 
 const { generateToken } = require("../utils/utils");
 const KhachHang = require("../model/KhachHangModel");
+const { isAuth } = require("../utils/utils");
 
 //login
 router.post("/dangnhap", async (req, res) => {
   const khach = await KhachHang.findOne({ email: req.body.email });
   if (khach) {
-    if (bcrypt.compareSync(req.body.password, khach.password)) {
-      res.send({
+    // if (bcrypt.compareSync(req.body.password, khach.password));
+    //    {
+    //     res.send({
+    //       _id: khach._id,
+    //       hoten: khach.hoten,
+    //       email: khach.email,
+    //       sdt: khach.sdt,
+    //       diachi: khach.diachi,
+    //       token: generateToken(khach),
+    //     });
+    //     return;
+    //   }
+    // }
+    // res.status(401).send({ message: "sai tài khoản hoặc email" });
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      khach.password
+    );
+    if (validPassword) {
+      res.status(200).json({
+        message: "Mật khẩu hợp lệ",
         _id: khach._id,
         hoten: khach.hoten,
         email: khach.email,
@@ -18,10 +38,12 @@ router.post("/dangnhap", async (req, res) => {
         diachi: khach.diachi,
         token: generateToken(khach),
       });
-      return;
+    } else {
+      res.status(400).json({ error: "Sai mật khẩu" });
     }
+  } else {
+    res.status(401).json({ error: "Tài khoản không tồn tại" });
   }
-  res.status(401).send({ message: "sai tài khoản hoặc email" });
 });
 //dang ky
 router.post("/dangky", async (req, res) => {
@@ -51,5 +73,7 @@ router.get("/:id", async (req, res) => {
     res.status(400).send({ message: " không tìm thấy người dùng" });
   }
 });
+
+
 
 module.exports = router;

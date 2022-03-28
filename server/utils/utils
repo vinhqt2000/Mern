@@ -9,7 +9,7 @@ const generateToken = (khachhang) => {
       sdt: khachhang.sdt,
       diachi: khachhang.sdt,
     },
-    process.env.JWT_SECRET || "some",
+    process.env.JWT_SECRET || "somethingsecret",
     {
       expiresIn: "30d",
     }
@@ -22,7 +22,7 @@ const isAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length);
     jwt.verify(
       token,
-      process.env.JWT_SECRET || "som",
+      process.env.JWT_SECRET || "somethingsecret",
       (err, decode) => {
         if (err) {
           res.status(401).send({ message: "Không đúng Token" });
