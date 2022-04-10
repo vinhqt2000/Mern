@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-function Header() {
-  const [cartItems, setCartItems] = useState([]);
-
-  let userInfo = JSON.parse(localStorage.getItem("customerInfo"));
-
+function Header({ cart, user }) {
   const signout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
+    document.location.href = "/dangnhap";
+  };
+
+  const SoluongCart = () => {
+    return cart.reduce((sum, { soluong }) => sum + soluong, 0);
   };
 
   return (
@@ -39,6 +40,7 @@ function Header() {
           >
             <ul className="navbar-nav m-auto dropdown">
               <li className="nav-item active"></li>
+
               <li className="nav-item">
                 <Link to="/sanpham" className="nav-link">
                   Sản phẩm
@@ -56,44 +58,41 @@ function Header() {
                   Liên hệ
                 </Link>
               </li>
-              <li className="nav-item">
-                {userInfo ? (
-                  <li className="nav-item dropdown">
-                    <b
-                      className="nav-link dropdown-toggle"
-                      id="dropdownMenuLink"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      Hello: {userInfo.hoten}
-                    </b>
-                    <ul
-                      className="dropdown-menu bg-dark"
-                      aria-labelledby="dropdownMenuLink"
-                      style={{ padding: "10px", marginBottom: "10px" }}
-                    >
-                      <li className="nav-item">
-                        <b style={{ color: "white" }}> Lịch sử đơn hàng </b>{" "}
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to="/"
-                          className="nav-item"
-                          style={{ color: "white" }}
-                          onClick={signout}
-                        >
-                          Đăng xuất
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
-                ) : (
+
+              {user && user.hoten ? (
+                <li className="nav-item dropdown">
+                  <b
+                    className="nav-link dropdown-toggle"
+                    id="dropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Hello: {user.hoten}
+                  </b>
+                  <ul
+                    className="dropdown-menu bg-dark"
+                    aria-labelledby="dropdownMenuLink"
+                    style={{ padding: "10px", marginBottom: "10px" }}
+                  >
+                    <li className="nav-item">
+                      <Link
+                        to="/sanpham"
+                        onClick={signout}
+                        className="nav-link"
+                      >
+                        Đăng xuất
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              ) : (
+                <li className="nav-item">
                   <Link to="/dangnhap" className="nav-link">
                     Đăng nhập
                   </Link>
-                )}
-              </li>
+                </li>
+              )}
             </ul>
 
             <form className="form-inline my-2 my-lg-0">
@@ -115,7 +114,7 @@ function Header() {
 
               <Link to="/giohang" className="btn btn-success btn-sm ml-3">
                 <i className="fa fa-shopping-cart"></i>Giỏ hàng
-                <span className="badge badge-light">1</span>
+                <span className="badge ">{SoluongCart()}</span>
               </Link>
             </form>
           </div>

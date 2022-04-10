@@ -4,22 +4,23 @@ import { useParams, Link } from "react-router-dom";
 import CategoryView from "./CategoryView";
 
 function DetailPage() {
-  const params = useParams();
-  console.log(params);
-
+  const { id } = useParams();
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/sanpham/${params.id}`)
-      .then((res) => {
-        console.log(res);
-        setProduct(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [params.id]);
+    const fetchData = async () => {
+      await axios
+        .get(`http://localhost:5000/sanpham/${id}`)
+        .then((res) => {
+          console.log(res.data);
+          setProduct(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
+  }, [id]);
 
   return (
     <div className="container">
@@ -45,6 +46,7 @@ function DetailPage() {
         <CategoryView />
         {/* -- Category -- */}
         {/* {DetailProduct} */}
+
         <div>
           <div className="row">
             {/* <!-- Image --> */}
@@ -68,10 +70,10 @@ function DetailPage() {
                 <div className="card-body">
                   <h2 style={{ color: "green" }}>{product.tensp}</h2>
                   <div style={{ padding: "10px" }}>
-                    {/* <p className="price">Giá sản phẩm: 150,000 VNĐ</p> */}
-                    <h6>
-                      Giá sản phẩm: <h2>{product.giasp} VNĐ</h2>
-                    </h6>
+                    <h5>
+                      Giá sản phẩm:{" "}
+                      <b>{parseInt(product.giasp).toLocaleString()} VNĐ</b>
+                    </h5>
                   </div>
                   <form method="get" action="">
                     <div className="form-group">
@@ -95,7 +97,8 @@ function DetailPage() {
                           id="quantity"
                           name="quantity"
                           min="1"
-                          max="100"
+                          max="50"
+                          readOnly
                           defaultValue={1}
                         />
 
@@ -112,13 +115,13 @@ function DetailPage() {
                       </div>
                     </div>
                     <a
-                      href="cart.html"
+                      href="/"
                       className="btn btn-success btn-lg btn-block text-uppercase"
                     >
                       <i className="fa fa-shopping-cart"></i> Thêm vào giỏ
                     </a>
                     <a
-                      href="cadas"
+                      href="/"
                       className="btn btn-primary btn-lg btn-block text-uppercase"
                     >
                       <i className="fa fa-shopping-cart"></i> Mua ngay

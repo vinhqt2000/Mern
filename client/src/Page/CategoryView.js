@@ -23,6 +23,7 @@ function CategoryView() {
         <div className="card-header bg-success text-white text-uppercase">
           <i className="fa fa-list"></i> Loại sản phẩm
         </div>
+
         <ul className="list-group category_block">
           {category.map((item, index) => (
             <li className="list-group-item" key={index}>

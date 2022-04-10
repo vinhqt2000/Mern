@@ -2,51 +2,47 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const OrderSchema = new Schema({
-  khachhang: {
-    type: mongoose.Types.ObjectId,
-    ref: "KhachHang",
-  },
-  items: [
-    {
-      tensp: {
-        type: String,
+const OrderSchema = new Schema(
+  {
+    items: [
+      {
+        tensp: {
+          type: String,
+        },
+        soluong: {
+          type: Number,
+        },
+        giasp: {
+          type: Number,
+        },
+        hinhanhSP: {
+          type: String,
+        },
+        sanpham: {
+          type: mongoose.Types.ObjectId,
+          ref: "SanPham",
+        },
       },
-      soluong: {
-        type: Number,
-      },
-      giasp: {
-        type: Number,
-      },
-      hinhanhSP: {
-        type: String,
-      },
-      sanpham: {
-        type: mongoose.Types.ObjectId,
-        ref: "SanPham",
-      },
+    ],
+    diaChiGiao: {
+      type: String,
     },
-  ],
-  diaChiGiao: {
-    type: String,
+    sdt: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    tonggia: {
+      type: Number,
+    },
+    khachhang: {
+      type: mongoose.Types.ObjectId,
+      ref: "KhachHang",
+    },
   },
-  giamua: {
-    type: Number,
-  },
-  sdt: {
-    type: String,
-  },
-  email: {
-    type: String,
-  },
-  tonggia: {
-    type: Number,
-  },
-  daThanhToan: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { timestamps: true }
+);
 
 const Order = mongoose.model("Order", OrderSchema);
 module.exports = Order;

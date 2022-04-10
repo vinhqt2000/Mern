@@ -1,58 +1,32 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState();
+  const [errMess, setErrorMess] = useState("");
+  useEffect(() => {
+    setErrorMess("");
+  }, [email, password]);
 
-  // const login = () => {
-  //   Axios.post("http://localhost:5000/user/dangnhap", {
-  //     email: email,
-  //     password: password,
-  //   })
-  //     .then((res) => {
-  //       localStorage.setItem("token", JSON.stringify(res.data));
-  //       console.log(res.data);
-  //       res.status(201).send();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  const submitForm = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await Axios.post("http://localhost:5000/user/dangnhap", {
-      email: email,
-      password: password,
-    })
-      .then((res) => {
-        setUser(res.data);
-        localStorage.setItem("customerInfo", JSON.stringify(res.data));
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
+    try {
+      const response = await axios.post("http://localhost:5000/user/dangnhap", {
+        email: email,
+        password: password,
       });
+      sessionStorage.setItem("userInfo", JSON.stringify(response.data));
+      window.location.href = "/sanpham";
+    } catch (err) {
+      setErrorMess("Đăng nhập thất bại");
+    }
   };
 
   return (
     <div className="container">
       <div className="container">
-        {/* <div className="row">
-          <div className="col">
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item">Home</li>
-                <li className="breadcrumb-item">Đăng nhập</li>
-              </ol>
-            </nav>
-          </div>
-        </div> */}
-
         <div className="col-md-12">
           <div className="row">
             <div className="container ">
@@ -60,11 +34,11 @@ function LoginPage() {
                 <b>Đăng nhập</b>
               </h4>
               <hr />
-
+              <div>{errMess}</div>
               <form
+                onSubmit={handleSubmit}
                 className="login-form "
                 style={{ width: "40", padding: "25px" }}
-                onSubmit={submitForm}
               >
                 <div className="form-group">
                   <input
@@ -72,6 +46,10 @@ function LoginPage() {
                     className="form-control"
                     placeholder="Email"
                     required
+                    autoFocus
+                    id="email"
+                    value={email}
+                    autoComplete="on"
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
@@ -81,6 +59,9 @@ function LoginPage() {
                     className="form-control"
                     placeholder="Mật khẩu"
                     required
+                    id="password"
+                    value={password}
+                    autoComplete="off"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
@@ -88,9 +69,8 @@ function LoginPage() {
                 <hr />
                 <div className="clearfix form-group">
                   <label className="float-left form-check-label">
-                    <Link to="">Đăng ký tài khoản?</Link>
+                    <Link to="/dangky">Đăng ký tài khoản?</Link>
                   </label>
-
                   <Link to="" style={{ float: "right" }}>
                     Quên mật khẩu?
                   </Link>
@@ -100,13 +80,11 @@ function LoginPage() {
                   <button
                     type="submit"
                     className="btn btn-primary btn-block btn-success"
-                    // onClick={login}
                   >
                     Đăng nhập
                   </button>
                 </div>
               </form>
-              <b>{}</b>
             </div>
           </div>
         </div>
