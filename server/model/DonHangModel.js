@@ -24,7 +24,7 @@ const OrderSchema = new Schema(
         },
       },
     ],
-    diaChiGiao: {
+    diachi: {
       type: String,
     },
     sdt: {
@@ -37,8 +37,7 @@ const OrderSchema = new Schema(
       type: Number,
     },
     khachhang: {
-      type: mongoose.Types.ObjectId,
-      ref: "KhachHang",
+      type: String,
     },
   },
   { timestamps: true }

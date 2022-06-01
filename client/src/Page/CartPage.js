@@ -1,8 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-export default function CartPage({ cart, setCart, user }) {
+export default function CartPage({ cart, setCart }) {
+  const [hoten, setHoten] = useState("");
+  const [diachi, setDiaChi] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
   const navigation = useNavigate();
+
   const TongDH = () => {
     return cart.reduce((sum, { giasp, soluong }) => sum + giasp * soluong, 0);
   };
@@ -28,21 +34,16 @@ export default function CartPage({ cart, setCart, user }) {
   const xoaCart = () => {
     setCart([]);
   };
-  const clickOrder = async () => {
-    if (!user && !user.hoten) {
-      navigation("/dangnhap");
-    }
+  const clickOrder = () => {
     try {
-      const response = await axios.post("http://localhost:5000/order", {
+      axios.post("http://localhost:5000/order", {
         items: cart,
-        diachiGiao: user.diachi,
-        giamua: cart.giasp,
-        sdt: user.sdt,
-        email: user.email,
+        diachi: diachi,
+        sdt: phone,
+        email: email,
         tonggia: TongDH(),
-        khachhang: user._id,
+        khachhang: hoten,
       });
-      console.log(response.data);
       xoaCart();
       navigation("/successOrder");
     } catch (error) {
@@ -134,65 +135,66 @@ export default function CartPage({ cart, setCart, user }) {
               Thông tin giao hàng
             </div>
 
-            {(user && user.hoten) != null ? (
-              <div className="p-3">
-                <div
-                  className="input-group mb-4 border rounded-pill p-2"
-                  style={{ alignItems: "center" }}
-                >
-                  <label className="form-control border-0 ">
-                    Tên Khách hàng:
-                  </label>
-                  <label className="form-control border-0">
-                    <b>{user.hoten}</b>
-                  </label>
-                </div>
-                <div
-                  className="input-group mb-4 border rounded-pill p-2"
-                  style={{ alignItems: "center" }}
-                >
-                  <label className="form-control border-0 ">Địa chỉ:</label>
-                  <input
-                    type="text"
-                    placeholder="Địa chỉ"
-                    aria-describedby="button-addon3"
-                    readOnly
-                    className="form-control border-0"
-                    value={user.diachi}
-                  />
-                </div>
-                <div
-                  className="input-group mb-4 border rounded-pill p-2"
-                  style={{ alignItems: "center" }}
-                >
-                  <label className="form-control border-0 ">
-                    Số điện thoại:
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    placeholder="Số điện thoại"
-                    aria-describedby="button-addon3"
-                    className="form-control border-0"
-                    value={user.sdt}
-                  />
-                </div>
-                <div
-                  className="input-group mb-4 border rounded-pill p-2"
-                  style={{ alignItems: "center" }}
-                >
-                  <label className="form-control border-0 ">Email:</label>
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    aria-describedby="button-addon3"
-                    className="form-control border-0"
-                    value={user.email}
-                    readOnly
-                  />
-                </div>
+            <div className="p-3">
+              <div
+                className="input-group mb-4 border rounded-pill p-2"
+                style={{ alignItems: "center" }}
+              >
+                <label className="form-control border-0 ">
+                  Tên Khách hàng:
+                </label>
+                <input
+                  type="text"
+                  placeholder="Nhập Họ tên khách hàng..."
+                  aria-describedby="button-addon3"
+                  className="form-control border-0"
+                  required
+                  onChange={(e) => setHoten(e.target.value)}
+                />
               </div>
-            ) : null}
+              <div
+                className="input-group mb-4 border rounded-pill p-2"
+                style={{ alignItems: "center" }}
+              >
+                <label className="form-control border-0 ">Địa chỉ:</label>
+                <input
+                  type="text"
+                  placeholder="Nhập Địa chỉ giao hang..."
+                  aria-describedby="button-addon3"
+                  className="form-control border-0"
+                  required
+                  onChange={(e) => setDiaChi(e.target.value)}
+                />
+              </div>
+              <div
+                className="input-group mb-4 border rounded-pill p-2"
+                style={{ alignItems: "center" }}
+              >
+                <label className="form-control border-0 ">Số điện thoại:</label>
+                <input
+                  type="text"
+                  placeholder="Nhập Số điện thoại...."
+                  aria-describedby="button-addon3"
+                  className="form-control border-0"
+                  required
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <div
+                className="input-group mb-4 border rounded-pill p-2"
+                style={{ alignItems: "center" }}
+              >
+                <label className="form-control border-0 ">Email:</label>
+                <input
+                  type="email"
+                  placeholder="Nhập Email..."
+                  aria-describedby="button-addon3"
+                  className="form-control border-0"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
 

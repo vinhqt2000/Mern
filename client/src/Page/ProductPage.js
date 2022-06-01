@@ -34,7 +34,6 @@ function ProductPage({ cart, setCart }) {
     }
 
     setCart(cart2);
-    console.log(cart2);
   };
 
   return (

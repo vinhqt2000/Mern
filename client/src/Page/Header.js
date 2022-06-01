@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 
-function Header({ cart, user }) {
-  const signout = () => {
-    sessionStorage.clear();
-    document.location.href = "/dangnhap";
-  };
-
+function Header({ cart }) {
   const SoluongCart = () => {
     return cart.reduce((sum, { soluong }) => sum + soluong, 0);
   };
@@ -58,8 +53,12 @@ function Header({ cart, user }) {
                   Liên hệ
                 </Link>
               </li>
-
-              {user && user.hoten ? (
+              <li className="nav-item">
+                <Link to="/dangnhap" className="nav-link">
+                  Đăng nhập
+                </Link>
+              </li>
+              {/* {user && user.hoten ? (
                 <li className="nav-item dropdown">
                   <b
                     className="nav-link dropdown-toggle"
@@ -87,12 +86,8 @@ function Header({ cart, user }) {
                   </ul>
                 </li>
               ) : (
-                <li className="nav-item">
-                  <Link to="/dangnhap" className="nav-link">
-                    Đăng nhập
-                  </Link>
-                </li>
-              )}
+              
+              )} */}
             </ul>
 
             <form className="form-inline my-2 my-lg-0">

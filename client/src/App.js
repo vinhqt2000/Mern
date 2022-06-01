@@ -24,22 +24,14 @@ function App() {
   const [cart, setCart] = useState(
     JSON.parse(sessionStorage.getItem("cart")) || []
   );
-  const [user, setUser] = useState([]);
-  const fetchData = () => {
-    const items = JSON.parse(sessionStorage.getItem("userInfo"));
-    if (items) {
-      setUser(items);
-    }
-  };
   useEffect(() => {
     sessionStorage.setItem("cart", JSON.stringify(cart));
-    fetchData();
   }, [cart]);
 
   return (
     <Router>
       <div className="App">
-        <Header cart={cart} user={user} />
+        <Header cart={cart} />
         <Banner />
         <div className="container">
           <div className="row">
@@ -51,9 +43,8 @@ function App() {
               />
               <Route
                 path="/giohang"
-                element={<CartPage cart={cart} setCart={setCart} user={user} />}
+                element={<CartPage cart={cart} setCart={setCart} />}
               />
-              {/* <Route path="/sanpham/:id" element={<DetailProductPage />} /> */}
               <Route path="/gioithieu" element={<AboutPage />} />
               <Route path="/huongdanthanhtoan" element={<PaymentGuide />} />
               <Route path="/dangnhap" element={<LoginPage />} />
