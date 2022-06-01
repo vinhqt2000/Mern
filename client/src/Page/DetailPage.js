@@ -8,15 +8,18 @@ function DetailPage() {
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/sanpham/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        setProduct(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const fetchData = async () => {
+      await axios
+        .get(`http://localhost:5000/sanpham/${id}`)
+        .then((res) => {
+          console.log(res.data);
+          setProduct(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchData();
   }, [id]);
 
   return (

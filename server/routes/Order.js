@@ -5,7 +5,7 @@ const Order = require("../model/DonHangModel");
 router.post("/", async (req, res) => {
   const newDH = new Order({
     items: req.body.items,
-    diachi: req.body.diachi,
+    diachiGiao: req.body.diachiGiao,
     sdt: req.body.sdt,
     email: req.body.email,
     tonggia: req.body.tonggia,
